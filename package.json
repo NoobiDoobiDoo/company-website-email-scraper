@@ -1,0 +1,14 @@
+{
+  "name": "company-website-email-scraper",
+  "version": "1.0.0",
+  "description": "A custom Apify Actor to find company websites and scrape emails.",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "dependencies": {
+    "apify": "^3.0.0",
+    "puppeteer": "^19.0.0",
+    "csv-writer": "^1.6.0"
+  }
+}
