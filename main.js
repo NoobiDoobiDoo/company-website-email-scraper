@@ -41,40 +41,4 @@ Apify.main(async () => {
                 continue;
             }
 
-            // Step 2: Scrape emails from the website
-            await page.goto(website, { timeout: 60000 });
-            const emails = await page.evaluate(() => {
-                const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
-                const bodyText = document.body.innerText;
-                const emails = bodyText.match(emailRegex) || [];
-                return [...new Set(emails)]; // Remove duplicates
-            });
-
-            // Save results
-            results.push({
-                company,
-                website,
-                emails: emails.join(', '), // Combine multiple emails into a single string
-            });
-
-            console.log(`Processed: ${company}`);
-        } catch (error) {
-            console.error(`Error processing ${company}:`, error);
-            results.push({ company, website: 'Error', emails: 'Error' });
-        }
-
-        // Add a delay to avoid being blocked
-        await page.waitForTimeout(5000);
-    }
-
-    // Close the browser
-    await browser.close();
-
-    // Step 3: Save results to CSV
-    await csvWriter.writeRecords(results);
-    console.log('CSV file saved: output.csv');
-
-    // Save results to Apify dataset
-    await Apify.pushData(results);
-    console.log('Results saved to Apify dataset.');
-});
+            // Step 2: Scrape
