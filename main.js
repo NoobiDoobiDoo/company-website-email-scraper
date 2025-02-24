@@ -26,8 +26,8 @@ Apify.main(async () => {
         try {
             // Step 1: Search for the company website
             const searchQuery = `${company} official website`;
-            await page.goto(`https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`);
-            await page.waitForSelector('h3');
+            await page.goto(`https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`, { timeout: 60000 });
+            await page.waitForSelector('h3', { timeout: 60000 });
 
             // Extract the first search result URL
             const website = await page.evaluate(() => {
@@ -42,7 +42,7 @@ Apify.main(async () => {
             }
 
             // Step 2: Scrape emails from the website
-            await page.goto(website);
+            await page.goto(website, { timeout: 60000 });
             const emails = await page.evaluate(() => {
                 const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
                 const bodyText = document.body.innerText;
@@ -62,6 +62,9 @@ Apify.main(async () => {
             console.error(`Error processing ${company}:`, error);
             results.push({ company, website: 'Error', emails: 'Error' });
         }
+
+        // Add a delay to avoid being blocked
+        await page.waitForTimeout(5000);
     }
 
     // Close the browser
