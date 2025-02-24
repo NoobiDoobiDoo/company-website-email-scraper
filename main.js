@@ -24,6 +24,8 @@ Apify.main(async () => {
 
     for (const company of companies) {
         try {
+            console.log(`Processing: ${company}`);
+
             // Step 1: Search for the company website
             const searchQuery = `${company} official website`;
             await page.goto(`https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`, { timeout: 60000 });
@@ -41,6 +43,8 @@ Apify.main(async () => {
                 continue;
             }
 
+            console.log(`Found website for ${company}: ${website}`);
+
             // Step 2: Scrape emails from the website
             await page.goto(website, { timeout: 60000 });
             const emails = await page.evaluate(() => {
@@ -50,14 +54,14 @@ Apify.main(async () => {
                 return [...new Set(emails)]; // Remove duplicates
             });
 
+            console.log(`Found emails for ${company}: ${emails.join(', ')}`);
+
             // Save results
             results.push({
                 company,
                 website,
                 emails: emails.join(', '), // Combine multiple emails into a single string
             });
-
-            console.log(`Processed: ${company}`);
         } catch (error) {
             console.error(`Error processing ${company}:`, error);
             results.push({ company, website: 'Error', emails: 'Error' });
