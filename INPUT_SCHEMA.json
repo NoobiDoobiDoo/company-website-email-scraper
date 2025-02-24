@@ -1,0 +1,14 @@
+{
+    "title": "Company Website and Email Scraper",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "companies": {
+            "title": "List of Companies",
+            "type": "array",
+            "description": "Provide a list of company names.",
+            "editor": "stringList"
+        }
+    },
+    "required": ["companies"]
+}
